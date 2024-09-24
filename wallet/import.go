@@ -5,13 +5,13 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/btcsuite/btcd/btcec/v2"
-	"github.com/btcsuite/btcd/btcutil"
-	"github.com/btcsuite/btcd/btcutil/hdkeychain"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcwallet/netparams"
-	"github.com/btcsuite/btcwallet/waddrmgr"
-	"github.com/btcsuite/btcwallet/walletdb"
+	"github.com/sat20-labs/satsnet_btcd/btcec"
+	"github.com/sat20-labs/satsnet_btcd/btcutil"
+	"github.com/sat20-labs/satsnet_btcd/btcutil/hdkeychain"
+	"github.com/sat20-labs/satsnet_btcd/wire"
+	"github.com/sat20-labs/satsnet_btcwallet/netparams"
+	"github.com/sat20-labs/satsnet_btcwallet/waddrmgr"
+	"github.com/sat20-labs/satsnet_btcwallet/walletdb"
 )
 
 const (

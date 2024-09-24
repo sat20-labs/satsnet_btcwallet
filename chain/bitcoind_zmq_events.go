@@ -9,10 +9,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/rpcclient"
-	"github.com/btcsuite/btcd/wire"
 	"github.com/lightninglabs/gozmq"
+	"github.com/sat20-labs/satsnet_btcd/chaincfg/chainhash"
+	"github.com/sat20-labs/satsnet_btcd/rpcclient"
+	"github.com/sat20-labs/satsnet_btcd/wire"
 )
 
 // ZMQConfig holds all the config values needed to set up a ZMQ connection to

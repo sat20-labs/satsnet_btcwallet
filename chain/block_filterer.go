@@ -1,11 +1,11 @@
 package chain
 
 import (
-	"github.com/btcsuite/btcd/btcutil"
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcwallet/waddrmgr"
+	"github.com/sat20-labs/satsnet_btcd/btcutil"
+	"github.com/sat20-labs/satsnet_btcd/chaincfg"
+	"github.com/sat20-labs/satsnet_btcd/txscript"
+	"github.com/sat20-labs/satsnet_btcd/wire"
+	"github.com/sat20-labs/satsnet_btcwallet/waddrmgr"
 )
 
 // BlockFilterer is used to iteratively scan blocks for a set of addresses of

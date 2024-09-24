@@ -16,14 +16,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/btcsuite/btcd/btcutil"
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcwallet/internal/cfgutil"
-	"github.com/btcsuite/btcwallet/internal/legacy/keystore"
-	"github.com/btcsuite/btcwallet/netparams"
-	"github.com/btcsuite/btcwallet/wallet"
 	flags "github.com/jessevdk/go-flags"
 	"github.com/lightninglabs/neutrino"
+	"github.com/sat20-labs/satsnet_btcd/btcutil"
+	"github.com/sat20-labs/satsnet_btcd/chaincfg"
+	"github.com/sat20-labs/satsnet_btcwallet/internal/cfgutil"
+	"github.com/sat20-labs/satsnet_btcwallet/internal/legacy/keystore"
+	"github.com/sat20-labs/satsnet_btcwallet/netparams"
+	"github.com/sat20-labs/satsnet_btcwallet/wallet"
 )
 
 const (

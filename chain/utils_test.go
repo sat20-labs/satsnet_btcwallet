@@ -9,10 +9,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/btcsuite/btcd/blockchain"
-	"github.com/btcsuite/btcd/btcutil"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
+	"github.com/sat20-labs/satsnet_btcd/blockchain"
+	"github.com/sat20-labs/satsnet_btcd/btcutil"
+	"github.com/sat20-labs/satsnet_btcd/chaincfg/chainhash"
+	"github.com/sat20-labs/satsnet_btcd/wire"
 )
 
 // setupConnPair initiates a tcp connection between two peers.
@@ -82,7 +82,8 @@ func setupConnPair() (net.Conn, net.Conn, error) {
 // returns the root of the tree.
 //
 // This function was copied from:
-//     https://github.com/btcsuite/btcd/blob/36a96f6a0025b6aeaebe4106821c2d46ee4be8d4/blockchain/fullblocktests/generate.go#L303
+//
+//	https://github.com/sat20-labs/satsnet_btcd/blob/36a96f6a0025b6aeaebe4106821c2d46ee4be8d4/blockchain/fullblocktests/generate.go#L303
 func calcMerkleRoot(txns []*wire.MsgTx) chainhash.Hash {
 	if len(txns) == 0 {
 		return chainhash.Hash{}
@@ -102,7 +103,8 @@ func calcMerkleRoot(txns []*wire.MsgTx) chainhash.Hash {
 // with the solution.  False is returned if no solution exists.
 //
 // This function was copied from:
-//     https://github.com/btcsuite/btcd/blob/36a96f6a0025b6aeaebe4106821c2d46ee4be8d4/blockchain/fullblocktests/generate.go#L324
+//
+//	https://github.com/sat20-labs/satsnet_btcd/blob/36a96f6a0025b6aeaebe4106821c2d46ee4be8d4/blockchain/fullblocktests/generate.go#L324
 func solveBlock(header *wire.BlockHeader) bool {
 	// sbResult is used by the solver goroutines to send results.
 	type sbResult struct {

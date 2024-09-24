@@ -6,17 +6,17 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/btcsuite/btcd/btcec/v2"
-	"github.com/btcsuite/btcd/btcec/v2/schnorr"
-	"github.com/btcsuite/btcd/btcutil"
-	"github.com/btcsuite/btcd/btcutil/hdkeychain"
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcwallet/internal/zero"
-	"github.com/btcsuite/btcwallet/netparams"
-	"github.com/btcsuite/btcwallet/walletdb"
 	"github.com/lightninglabs/neutrino/cache/lru"
+	"github.com/sat20-labs/satsnet_btcd/btcec"
+	"github.com/sat20-labs/satsnet_btcd/btcec/schnorr"
+	"github.com/sat20-labs/satsnet_btcd/btcutil"
+	"github.com/sat20-labs/satsnet_btcd/btcutil/hdkeychain"
+	"github.com/sat20-labs/satsnet_btcd/chaincfg"
+	"github.com/sat20-labs/satsnet_btcd/txscript"
+	"github.com/sat20-labs/satsnet_btcd/wire"
+	"github.com/sat20-labs/satsnet_btcwallet/internal/zero"
+	"github.com/sat20-labs/satsnet_btcwallet/netparams"
+	"github.com/sat20-labs/satsnet_btcwallet/walletdb"
 )
 
 // HDVersion represents the different supported schemes of hierarchical
@@ -2508,7 +2508,7 @@ func (s *ScopedKeyManager) cloneKeyWithVersion(key *hdkeychain.ExtendedKey) (
 	var version HDVersion
 	net := s.rootManager.ChainParams().Net
 	switch net {
-	case wire.MainNet:
+	case wire.MainNet, wire.SatsNet:
 		switch s.scope {
 		case KeyScopeBIP0044, KeyScopeBIP0086:
 			version = HDVersionMainNetBIP0044
@@ -2520,7 +2520,7 @@ func (s *ScopedKeyManager) cloneKeyWithVersion(key *hdkeychain.ExtendedKey) (
 			return nil, fmt.Errorf("unsupported scope %v", s.scope)
 		}
 
-	case wire.TestNet, wire.TestNet3,
+	case wire.TestNet, wire.TestNet3, wire.SatsTestNet, wire.TestNet4,
 		netparams.SigNetWire(s.rootManager.ChainParams()):
 
 		switch s.scope {

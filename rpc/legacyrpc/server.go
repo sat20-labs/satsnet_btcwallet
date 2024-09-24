@@ -17,10 +17,10 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/btcsuite/btcd/btcjson"
-	"github.com/btcsuite/btcwallet/chain"
-	"github.com/btcsuite/btcwallet/wallet"
 	"github.com/btcsuite/websocket"
+	"github.com/sat20-labs/satsnet_btcd/btcjson"
+	"github.com/sat20-labs/satsnet_btcwallet/chain"
+	"github.com/sat20-labs/satsnet_btcwallet/wallet"
 )
 
 type websocketClient struct {
@@ -164,7 +164,7 @@ func NewServer(opts *Options, walletLoader *wallet.Loader, listeners []net.Liste
 // httpBasicAuth returns the UTF-8 bytes of the HTTP Basic authentication
 // string:
 //
-//   "Basic " + base64(username + ":" + password)
+//	"Basic " + base64(username + ":" + password)
 func httpBasicAuth(username, password string) []byte {
 	const header = "Basic "
 	base64 := base64.StdEncoding

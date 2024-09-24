@@ -9,12 +9,12 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/btcsuite/btcd/btcutil/hdkeychain"
-	"github.com/btcsuite/btcd/btcutil/psbt"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcwallet/waddrmgr"
-	"github.com/btcsuite/btcwallet/walletdb"
+	"github.com/sat20-labs/satsnet_btcd/btcutil/hdkeychain"
+	"github.com/sat20-labs/satsnet_btcd/btcutil/psbt"
+	"github.com/sat20-labs/satsnet_btcd/txscript"
+	"github.com/sat20-labs/satsnet_btcd/wire"
+	"github.com/sat20-labs/satsnet_btcwallet/waddrmgr"
+	"github.com/sat20-labs/satsnet_btcwallet/walletdb"
 )
 
 var (

@@ -9,16 +9,16 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/btcutil"
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcwallet/waddrmgr"
-	"github.com/btcsuite/btcwallet/wallet/txauthor"
-	"github.com/btcsuite/btcwallet/walletdb"
-	_ "github.com/btcsuite/btcwallet/walletdb/bdb"
-	"github.com/btcsuite/btcwallet/wtxmgr"
+	"github.com/sat20-labs/satsnet_btcd/btcutil"
+	"github.com/sat20-labs/satsnet_btcd/chaincfg"
+	"github.com/sat20-labs/satsnet_btcd/chaincfg/chainhash"
+	"github.com/sat20-labs/satsnet_btcd/txscript"
+	"github.com/sat20-labs/satsnet_btcd/wire"
+	"github.com/sat20-labs/satsnet_btcwallet/waddrmgr"
+	"github.com/sat20-labs/satsnet_btcwallet/wallet/txauthor"
+	"github.com/sat20-labs/satsnet_btcwallet/walletdb"
+	_ "github.com/sat20-labs/satsnet_btcwallet/walletdb/bdb"
+	"github.com/sat20-labs/satsnet_btcwallet/wtxmgr"
 	"github.com/stretchr/testify/require"
 )
 
@@ -53,7 +53,10 @@ func TestTxToOutputsDryRun(t *testing.T) {
 	}
 
 	// Add an output paying to the wallet's address to the database.
-	txOut := wire.NewTxOut(100000, p2shAddr)
+	satsRanges := []wire.SatsRange{{
+		Start: 0,
+		Size:  100000}}
+	txOut := wire.NewTxOut(100000, satsRanges, p2shAddr)
 	incomingTx := &wire.MsgTx{
 		TxIn: []*wire.TxIn{
 			{},
@@ -259,7 +262,10 @@ func TestTxToOutputsRandom(t *testing.T) {
 		TxOut: []*wire.TxOut{},
 	}
 	for amt := int64(5000); amt <= 125000; amt += 10000 {
-		incomingTx.AddTxOut(wire.NewTxOut(amt, p2shAddr))
+		satsRanges := []wire.SatsRange{{
+			Start: 0,
+			Size:  100000}}
+		incomingTx.AddTxOut(wire.NewTxOut(amt, satsRanges, p2shAddr))
 	}
 
 	addUtxo(t, w, incomingTx)
@@ -338,13 +344,18 @@ func TestCreateSimpleCustomChange(t *testing.T) {
 
 	const testAmt = 1_000_000
 
+	satsRanges := []wire.SatsRange{{
+		Start: 0,
+		Size:  testAmt,
+	}}
+
 	incomingTx := &wire.MsgTx{
 		TxIn: []*wire.TxIn{
 			{},
 		},
 		TxOut: []*wire.TxOut{
-			wire.NewTxOut(testAmt, p2wkhScript),
-			wire.NewTxOut(testAmt, p2trScript),
+			wire.NewTxOut(testAmt, satsRanges, p2wkhScript),
+			wire.NewTxOut(testAmt, satsRanges, p2trScript),
 		},
 	}
 	addUtxo(t, w, incomingTx)
@@ -428,15 +439,19 @@ func TestSelectUtxosTxoToOutpoint(t *testing.T) {
 	p2trScript, err := txscript.PayToAddrScript(p2trAddr)
 	require.NoError(t, err)
 
+	satsRanges := []wire.SatsRange{{
+		Start: 0,
+		Size:  1000000,
+	}}
 	incomingTx := &wire.MsgTx{
 		TxIn: []*wire.TxIn{
 			{},
 		},
 		TxOut: []*wire.TxOut{
-			wire.NewTxOut(1_000_000, p2wkhScript),
-			wire.NewTxOut(2_000_000, p2trScript),
-			wire.NewTxOut(3_000_000, p2trScript),
-			wire.NewTxOut(7_000_000, p2trScript),
+			wire.NewTxOut(1_000_000, satsRanges, p2wkhScript),
+			wire.NewTxOut(2_000_000, satsRanges, p2trScript),
+			wire.NewTxOut(3_000_000, satsRanges, p2trScript),
+			wire.NewTxOut(7_000_000, satsRanges, p2trScript),
 		},
 	}
 	addUtxo(t, w, incomingTx)

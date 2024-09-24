@@ -7,10 +7,10 @@ package wallet
 import (
 	"testing"
 
-	"github.com/btcsuite/btcd/btcutil"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcwallet/waddrmgr"
+	"github.com/sat20-labs/satsnet_btcd/btcutil"
+	"github.com/sat20-labs/satsnet_btcd/txscript"
+	"github.com/sat20-labs/satsnet_btcd/wire"
+	"github.com/sat20-labs/satsnet_btcwallet/waddrmgr"
 )
 
 // TestComputeInputScript checks that the wallet can create the full
@@ -55,9 +55,12 @@ func runTestCase(t *testing.T, w *Wallet, scope waddrmgr.KeyScope,
 	if err != nil {
 		t.Fatalf("unable to convert wallet address to p2sh: %v", err)
 	}
-
+	satsRanges := []wire.SatsRange{{
+		Start: 0,
+		Size:  100000,
+	}}
 	// Add an output paying to the wallet's address to the database.
-	utxOut := wire.NewTxOut(100000, p2shAddr)
+	utxOut := wire.NewTxOut(100000, satsRanges, p2shAddr)
 	incomingTx := &wire.MsgTx{
 		TxIn:  []*wire.TxIn{{}},
 		TxOut: []*wire.TxOut{utxOut},

@@ -9,15 +9,15 @@ import (
 	"encoding/hex"
 	"testing"
 
-	"github.com/btcsuite/btcwallet/wallet/txrules"
-	"github.com/btcsuite/btcwallet/wallet/txsizes"
+	"github.com/sat20-labs/satsnet_btcwallet/wallet/txrules"
+	"github.com/sat20-labs/satsnet_btcwallet/wallet/txsizes"
 	"github.com/stretchr/testify/require"
 
-	"github.com/btcsuite/btcd/btcutil"
-	"github.com/btcsuite/btcd/btcutil/psbt"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcwallet/waddrmgr"
+	"github.com/sat20-labs/satsnet_btcd/btcutil"
+	"github.com/sat20-labs/satsnet_btcd/btcutil/psbt"
+	"github.com/sat20-labs/satsnet_btcd/txscript"
+	"github.com/sat20-labs/satsnet_btcd/wire"
+	"github.com/sat20-labs/satsnet_btcwallet/waddrmgr"
 )
 
 var (
@@ -51,9 +51,13 @@ func TestFundPsbt(t *testing.T) {
 
 	// Register two big UTXO that will be used when funding the PSBT.
 	const utxo1Amount = 1000000
+	satsRanges := []wire.SatsRange{{
+		Start: 0,
+		Size:  1000000,
+	}}
 	incomingTx1 := &wire.MsgTx{
 		TxIn:  []*wire.TxIn{{}},
-		TxOut: []*wire.TxOut{wire.NewTxOut(utxo1Amount, p2wkhAddr)},
+		TxOut: []*wire.TxOut{wire.NewTxOut(utxo1Amount, satsRanges, p2wkhAddr)},
 	}
 	addUtxo(t, w, incomingTx1)
 	utxo1 := wire.OutPoint{
@@ -64,7 +68,7 @@ func TestFundPsbt(t *testing.T) {
 	const utxo2Amount = 900000
 	incomingTx2 := &wire.MsgTx{
 		TxIn:  []*wire.TxIn{{}},
-		TxOut: []*wire.TxOut{wire.NewTxOut(utxo2Amount, np2wkhAddr)},
+		TxOut: []*wire.TxOut{wire.NewTxOut(utxo2Amount, satsRanges, np2wkhAddr)},
 	}
 	addUtxo(t, w, incomingTx2)
 	utxo2 := wire.OutPoint{
@@ -455,8 +459,12 @@ func TestFinalizePsbt(t *testing.T) {
 	}
 
 	// Register two big UTXO that will be used when funding the PSBT.
-	utxOutP2WKH := wire.NewTxOut(1000000, p2wkhAddr)
-	utxOutNP2WKH := wire.NewTxOut(1000000, np2wkhAddr)
+	satsRanges := []wire.SatsRange{{
+		Start: 0,
+		Size:  1000000,
+	}}
+	utxOutP2WKH := wire.NewTxOut(1000000, satsRanges, p2wkhAddr)
+	utxOutNP2WKH := wire.NewTxOut(1000000, satsRanges, np2wkhAddr)
 	incomingTx := &wire.MsgTx{
 		TxIn:  []*wire.TxIn{{}},
 		TxOut: []*wire.TxOut{utxOutP2WKH, utxOutNP2WKH},

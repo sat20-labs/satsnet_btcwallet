@@ -3,8 +3,8 @@ package waddrmgr
 import (
 	"fmt"
 
-	"github.com/btcsuite/btcd/btcec/v2"
-	"github.com/btcsuite/btcd/txscript"
+	"github.com/sat20-labs/satsnet_btcd/btcec"
+	"github.com/sat20-labs/satsnet_btcd/txscript"
 )
 
 // TapscriptType is a special type denoting the different variants of

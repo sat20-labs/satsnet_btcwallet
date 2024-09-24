@@ -7,17 +7,18 @@ package txauthor
 import (
 	"testing"
 
-	"github.com/btcsuite/btcd/btcutil"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcwallet/wallet/txrules"
-	"github.com/btcsuite/btcwallet/wallet/txsizes"
+	"github.com/sat20-labs/satsnet_btcd/btcutil"
+	"github.com/sat20-labs/satsnet_btcd/wire"
+	"github.com/sat20-labs/satsnet_btcwallet/wallet/txrules"
+	"github.com/sat20-labs/satsnet_btcwallet/wallet/txsizes"
 )
 
 func p2pkhOutputs(amounts ...btcutil.Amount) []*wire.TxOut {
 	v := make([]*wire.TxOut, 0, len(amounts))
 	for _, a := range amounts {
 		outScript := make([]byte, txsizes.P2PKHOutputSize)
-		v = append(v, wire.NewTxOut(int64(a), outScript))
+		satsRanges := make([]wire.SatsRange, 0)
+		v = append(v, wire.NewTxOut(int64(a), satsRanges, outScript))
 	}
 	return v
 }

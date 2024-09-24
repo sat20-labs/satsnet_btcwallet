@@ -13,13 +13,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/btcutil"
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcwallet/walletdb"
-	_ "github.com/btcsuite/btcwallet/walletdb/bdb"
 	"github.com/lightningnetwork/lnd/clock"
+	"github.com/sat20-labs/satsnet_btcd/btcutil"
+	"github.com/sat20-labs/satsnet_btcd/chaincfg"
+	"github.com/sat20-labs/satsnet_btcd/chaincfg/chainhash"
+	"github.com/sat20-labs/satsnet_btcd/wire"
+	"github.com/sat20-labs/satsnet_btcwallet/walletdb"
+	_ "github.com/sat20-labs/satsnet_btcwallet/walletdb/bdb"
 )
 
 // Received transaction output for mainnet outpoint
@@ -128,8 +128,14 @@ func TestInsertsCreditsDebitsRollbacks(t *testing.T) {
 	spendingTx := wire.NewMsgTx(wire.TxVersion)
 	spendingTxIn := wire.NewTxIn(wire.NewOutPoint(TstDoubleSpendTx.Hash(), 0), []byte{0, 1, 2, 3, 4}, nil)
 	spendingTx.AddTxIn(spendingTxIn)
-	spendingTxOut1 := wire.NewTxOut(1e7, []byte{5, 6, 7, 8, 9})
-	spendingTxOut2 := wire.NewTxOut(9e7, []byte{10, 11, 12, 13, 14})
+
+	satsRanges := []wire.SatsRange{{
+		Start: 0,
+		Size:  100000,
+	}}
+
+	spendingTxOut1 := wire.NewTxOut(1e7, satsRanges, []byte{5, 6, 7, 8, 9})
+	spendingTxOut2 := wire.NewTxOut(9e7, satsRanges, []byte{10, 11, 12, 13, 14})
 	spendingTx.AddTxOut(spendingTxOut1)
 	spendingTx.AddTxOut(spendingTxOut2)
 	TstSpendingTx := btcutil.NewTx(spendingTx)

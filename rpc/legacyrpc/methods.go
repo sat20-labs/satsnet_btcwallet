@@ -15,19 +15,19 @@ import (
 	"sync"
 	"time"
 
-	"github.com/btcsuite/btcd/btcec/v2/ecdsa"
-	"github.com/btcsuite/btcd/btcjson"
-	"github.com/btcsuite/btcd/btcutil"
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/rpcclient"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcwallet/chain"
-	"github.com/btcsuite/btcwallet/waddrmgr"
-	"github.com/btcsuite/btcwallet/wallet"
-	"github.com/btcsuite/btcwallet/wallet/txrules"
-	"github.com/btcsuite/btcwallet/wtxmgr"
+	"github.com/sat20-labs/satsnet_btcd/btcec/ecdsa"
+	"github.com/sat20-labs/satsnet_btcd/btcjson"
+	"github.com/sat20-labs/satsnet_btcd/btcutil"
+	"github.com/sat20-labs/satsnet_btcd/chaincfg"
+	"github.com/sat20-labs/satsnet_btcd/chaincfg/chainhash"
+	"github.com/sat20-labs/satsnet_btcd/rpcclient"
+	"github.com/sat20-labs/satsnet_btcd/txscript"
+	"github.com/sat20-labs/satsnet_btcd/wire"
+	"github.com/sat20-labs/satsnet_btcwallet/chain"
+	"github.com/sat20-labs/satsnet_btcwallet/waddrmgr"
+	"github.com/sat20-labs/satsnet_btcwallet/wallet"
+	"github.com/sat20-labs/satsnet_btcwallet/wallet/txrules"
+	"github.com/sat20-labs/satsnet_btcwallet/wtxmgr"
 )
 
 const (
@@ -398,7 +398,7 @@ func dumpPrivKey(icmd interface{}, w *wallet.Wallet) (interface{}, error) {
 func getAddressesByAccount(icmd interface{}, w *wallet.Wallet) (interface{}, error) {
 	cmd := icmd.(*btcjson.GetAddressesByAccountCmd)
 
-	account, err := w.AccountNumber(waddrmgr.KeyScopeBIP0044, cmd.Account)
+	account, err := w.AccountNumber(waddrmgr.KeyScopeBIP0086, cmd.Account)
 	if err != nil {
 		return nil, err
 	}
@@ -434,7 +434,7 @@ func getBalance(icmd interface{}, w *wallet.Wallet) (interface{}, error) {
 		}
 	} else {
 		var account uint32
-		account, err = w.AccountNumber(waddrmgr.KeyScopeBIP0044, accountName)
+		account, err = w.AccountNumber(waddrmgr.KeyScopeBIP0086, accountName)
 		if err != nil {
 			return nil, err
 		}
@@ -537,7 +537,7 @@ func getAccount(icmd interface{}, w *wallet.Wallet) (interface{}, error) {
 		return nil, &ErrAddressNotInWallet
 	}
 
-	acctName, err := w.AccountName(waddrmgr.KeyScopeBIP0044, account)
+	acctName, err := w.AccountName(waddrmgr.KeyScopeBIP0086, account)
 	if err != nil {
 		return nil, &ErrAccountNameNotFound
 	}
@@ -553,11 +553,11 @@ func getAccount(icmd interface{}, w *wallet.Wallet) (interface{}, error) {
 func getAccountAddress(icmd interface{}, w *wallet.Wallet) (interface{}, error) {
 	cmd := icmd.(*btcjson.GetAccountAddressCmd)
 
-	account, err := w.AccountNumber(waddrmgr.KeyScopeBIP0044, cmd.Account)
+	account, err := w.AccountNumber(waddrmgr.KeyScopeBIP0086, cmd.Account)
 	if err != nil {
 		return nil, err
 	}
-	addr, err := w.CurrentAddress(account, waddrmgr.KeyScopeBIP0044)
+	addr, err := w.CurrentAddress(account, waddrmgr.KeyScopeBIP0086)
 	if err != nil {
 		return nil, err
 	}
@@ -574,7 +574,7 @@ func getUnconfirmedBalance(icmd interface{}, w *wallet.Wallet) (interface{}, err
 	if cmd.Account != nil {
 		acctName = *cmd.Account
 	}
-	account, err := w.AccountNumber(waddrmgr.KeyScopeBIP0044, acctName)
+	account, err := w.AccountNumber(waddrmgr.KeyScopeBIP0086, acctName)
 	if err != nil {
 		return nil, err
 	}
@@ -613,7 +613,7 @@ func importPrivKey(icmd interface{}, w *wallet.Wallet) (interface{}, error) {
 	}
 
 	// Import the private key, handling any errors.
-	_, err = w.ImportPrivateKey(waddrmgr.KeyScopeBIP0044, wif, nil, *cmd.Rescan)
+	_, err = w.ImportPrivateKey(waddrmgr.KeyScopeBIP0086, wif, nil, *cmd.Rescan)
 	switch {
 	case waddrmgr.IsError(err, waddrmgr.ErrDuplicateAddress):
 		// Do not return duplicate key errors to the client.
@@ -643,7 +643,7 @@ func createNewAccount(icmd interface{}, w *wallet.Wallet) (interface{}, error) {
 		return nil, &ErrReservedAccountName
 	}
 
-	_, err := w.NextAccount(waddrmgr.KeyScopeBIP0044, cmd.Account)
+	_, err := w.NextAccount(waddrmgr.KeyScopeBIP0086, cmd.Account)
 	if waddrmgr.IsError(err, waddrmgr.ErrLocked) {
 		return nil, &btcjson.RPCError{
 			Code: btcjson.ErrRPCWalletUnlockNeeded,
@@ -666,11 +666,11 @@ func renameAccount(icmd interface{}, w *wallet.Wallet) (interface{}, error) {
 	}
 
 	// Check that given account exists
-	account, err := w.AccountNumber(waddrmgr.KeyScopeBIP0044, cmd.OldAccount)
+	account, err := w.AccountNumber(waddrmgr.KeyScopeBIP0086, cmd.OldAccount)
 	if err != nil {
 		return nil, err
 	}
-	return nil, w.RenameAccount(waddrmgr.KeyScopeBIP0044, account, cmd.NewAccount)
+	return nil, w.RenameAccount(waddrmgr.KeyScopeBIP0086, account, cmd.NewAccount)
 }
 
 // getNewAddress handles a getnewaddress request by returning a new
@@ -685,13 +685,15 @@ func getNewAddress(icmd interface{}, w *wallet.Wallet) (interface{}, error) {
 	if cmd.Account != nil {
 		acctName = *cmd.Account
 	}
-	keyScope := waddrmgr.KeyScopeBIP0044
+	keyScope := waddrmgr.KeyScopeBIP0086 // default address is p2tr
 	if cmd.AddressType != nil {
 		switch *cmd.AddressType {
 		case "p2sh-segwit":
 			keyScope = waddrmgr.KeyScopeBIP0049Plus
 		case "bech32":
 			keyScope = waddrmgr.KeyScopeBIP0084
+		case "p2tr":
+			keyScope = waddrmgr.KeyScopeBIP0086
 		case "legacy": // default if unset
 		default:
 			return nil, &ErrAddressTypeUnknown
@@ -722,13 +724,15 @@ func getRawChangeAddress(icmd interface{}, w *wallet.Wallet) (interface{}, error
 	if cmd.Account != nil {
 		acctName = *cmd.Account
 	}
-	keyScope := waddrmgr.KeyScopeBIP0044
+	keyScope := waddrmgr.KeyScopeBIP0086
 	if cmd.AddressType != nil {
 		switch *cmd.AddressType {
 		case "p2sh-segwit":
 			keyScope = waddrmgr.KeyScopeBIP0049Plus
 		case "bech32":
 			keyScope = waddrmgr.KeyScopeBIP0084
+		case "p2tr":
+			keyScope = waddrmgr.KeyScopeBIP0086
 		case "legacy": // default if unset
 		default:
 			return nil, &ErrAddressTypeUnknown
@@ -752,7 +756,7 @@ func getRawChangeAddress(icmd interface{}, w *wallet.Wallet) (interface{}, error
 func getReceivedByAccount(icmd interface{}, w *wallet.Wallet) (interface{}, error) {
 	cmd := icmd.(*btcjson.GetReceivedByAccountCmd)
 
-	account, err := w.AccountNumber(waddrmgr.KeyScopeBIP0044, cmd.Account)
+	account, err := w.AccountNumber(waddrmgr.KeyScopeBIP0086, cmd.Account)
 	if err != nil {
 		return nil, err
 	}
@@ -761,7 +765,7 @@ func getReceivedByAccount(icmd interface{}, w *wallet.Wallet) (interface{}, erro
 	// algorithm is already dominated by reading every transaction in the
 	// wallet's history.
 	results, err := w.TotalReceivedForAccounts(
-		waddrmgr.KeyScopeBIP0044, int32(*cmd.MinConf),
+		waddrmgr.KeyScopeBIP0086, int32(*cmd.MinConf),
 	)
 	if err != nil {
 		return nil, err
@@ -905,7 +909,7 @@ func getTransaction(icmd interface{}, w *wallet.Wallet) (interface{}, error) {
 			address = addr.EncodeAddress()
 			account, err := w.AccountOfAddress(addr)
 			if err == nil {
-				name, err := w.AccountName(waddrmgr.KeyScopeBIP0044, account)
+				name, err := w.AccountName(waddrmgr.KeyScopeBIP0086, account)
 				if err == nil {
 					accountName = name
 				}
@@ -1054,7 +1058,7 @@ func listAccounts(icmd interface{}, w *wallet.Wallet) (interface{}, error) {
 	cmd := icmd.(*btcjson.ListAccountsCmd)
 
 	accountBalances := map[string]float64{}
-	results, err := w.AccountBalances(waddrmgr.KeyScopeBIP0044, int32(*cmd.MinConf))
+	results, err := w.AccountBalances(waddrmgr.KeyScopeBIP0086, int32(*cmd.MinConf))
 	if err != nil {
 		return nil, err
 	}
@@ -1088,7 +1092,7 @@ func listReceivedByAccount(icmd interface{}, w *wallet.Wallet) (interface{}, err
 	cmd := icmd.(*btcjson.ListReceivedByAccountCmd)
 
 	results, err := w.TotalReceivedForAccounts(
-		waddrmgr.KeyScopeBIP0044, int32(*cmd.MinConf),
+		waddrmgr.KeyScopeBIP0086, int32(*cmd.MinConf),
 	)
 	if err != nil {
 		return nil, err
@@ -1373,8 +1377,11 @@ func makeOutputs(pairs map[string]btcutil.Amount, chainParams *chaincfg.Params) 
 		if err != nil {
 			return nil, fmt.Errorf("cannot create txout script: %w", err)
 		}
-
-		outputs = append(outputs, wire.NewTxOut(int64(amt), pkScript))
+		satsRanges := []wire.SatsRange{{
+			Start: 0,
+			Size:  100000,
+		}}
+		outputs = append(outputs, wire.NewTxOut(int64(amt), satsRanges, pkScript))
 	}
 	return outputs, nil
 }
@@ -1438,7 +1445,7 @@ func sendFrom(icmd interface{}, w *wallet.Wallet, chainClient *chain.RPCClient) 
 	}
 
 	account, err := w.AccountNumber(
-		waddrmgr.KeyScopeBIP0044, cmd.FromAccount,
+		waddrmgr.KeyScopeBIP0086, cmd.FromAccount,
 	)
 	if err != nil {
 		return nil, err
@@ -1461,7 +1468,7 @@ func sendFrom(icmd interface{}, w *wallet.Wallet, chainClient *chain.RPCClient) 
 		cmd.ToAddress: amt,
 	}
 
-	return sendPairs(w, pairs, waddrmgr.KeyScopeBIP0044, account, minConf,
+	return sendPairs(w, pairs, waddrmgr.KeyScopeBIP0086, account, minConf,
 		txrules.DefaultRelayFeePerKb)
 }
 
@@ -1482,7 +1489,7 @@ func sendMany(icmd interface{}, w *wallet.Wallet) (interface{}, error) {
 		}
 	}
 
-	account, err := w.AccountNumber(waddrmgr.KeyScopeBIP0044, cmd.FromAccount)
+	account, err := w.AccountNumber(waddrmgr.KeyScopeBIP0086, cmd.FromAccount)
 	if err != nil {
 		return nil, err
 	}
@@ -1503,7 +1510,7 @@ func sendMany(icmd interface{}, w *wallet.Wallet) (interface{}, error) {
 		pairs[k] = amt
 	}
 
-	return sendPairs(w, pairs, waddrmgr.KeyScopeBIP0044, account, minConf, txrules.DefaultRelayFeePerKb)
+	return sendPairs(w, pairs, waddrmgr.KeyScopeBIP0086, account, minConf, txrules.DefaultRelayFeePerKb)
 }
 
 // sendToAddress handles a sendtoaddress RPC request by creating a new
@@ -1539,7 +1546,7 @@ func sendToAddress(icmd interface{}, w *wallet.Wallet) (interface{}, error) {
 	}
 
 	// sendtoaddress always spends from the default account, this matches bitcoind
-	return sendPairs(w, pairs, waddrmgr.KeyScopeBIP0044, waddrmgr.DefaultAccountNum, 1,
+	return sendPairs(w, pairs, waddrmgr.KeyScopeBIP0086, waddrmgr.DefaultAccountNum, 1,
 		txrules.DefaultRelayFeePerKb)
 }
 
@@ -1785,7 +1792,7 @@ func validateAddress(icmd interface{}, w *wallet.Wallet) (interface{}, error) {
 	// information about it available and it is "mine".
 	result.IsMine = true
 	acctName, err := w.AccountName(
-		waddrmgr.KeyScopeBIP0044, ainfo.InternalAccount(),
+		waddrmgr.KeyScopeBIP0086, ainfo.InternalAccount(),
 	)
 	if err != nil {
 		return nil, &ErrAccountNameNotFound

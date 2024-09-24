@@ -8,12 +8,12 @@ package txauthor
 import (
 	"errors"
 
-	"github.com/btcsuite/btcd/btcutil"
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcwallet/wallet/txrules"
-	"github.com/btcsuite/btcwallet/wallet/txsizes"
+	"github.com/sat20-labs/satsnet_btcd/btcutil"
+	"github.com/sat20-labs/satsnet_btcd/chaincfg"
+	"github.com/sat20-labs/satsnet_btcd/txscript"
+	"github.com/sat20-labs/satsnet_btcd/wire"
+	"github.com/sat20-labs/satsnet_btcwallet/wallet/txrules"
+	"github.com/sat20-labs/satsnet_btcwallet/wallet/txsizes"
 )
 
 // SumOutputValues sums up the list of TxOuts and returns an Amount.
@@ -149,7 +149,8 @@ func NewUnsignedTransaction(outputs []*wire.TxOut, feeRatePerKb btcutil.Amount,
 		if err != nil {
 			return nil, err
 		}
-		change := wire.NewTxOut(int64(changeAmount), changeScript)
+		changeSatsRanges := make([]wire.SatsRange, 0)
+		change := wire.NewTxOut(int64(changeAmount), changeSatsRanges, changeScript)
 		if changeAmount != 0 && !txrules.IsDustOutput(change,
 			txrules.DefaultRelayFeePerKb) {
 

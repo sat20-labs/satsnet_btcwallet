@@ -3,8 +3,8 @@ package chain
 import (
 	"testing"
 
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/rpcclient"
+	"github.com/sat20-labs/satsnet_btcd/chaincfg"
+	"github.com/sat20-labs/satsnet_btcd/rpcclient"
 	"github.com/stretchr/testify/require"
 )
 

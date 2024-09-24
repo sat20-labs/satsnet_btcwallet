@@ -15,8 +15,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/btcsuite/btcd/btcutil/hdkeychain"
-	"github.com/btcsuite/btcwallet/internal/legacy/keystore"
+	"github.com/sat20-labs/satsnet_btcd/btcutil/hdkeychain"
+	"github.com/sat20-labs/satsnet_btcwallet/internal/legacy/keystore"
 	"golang.org/x/term"
 )
 

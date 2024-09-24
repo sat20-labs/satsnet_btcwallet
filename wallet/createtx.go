@@ -11,15 +11,15 @@ import (
 	"math/rand"
 	"sort"
 
-	"github.com/btcsuite/btcd/btcec/v2"
-	"github.com/btcsuite/btcd/btcutil"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcwallet/waddrmgr"
-	"github.com/btcsuite/btcwallet/wallet/txauthor"
-	"github.com/btcsuite/btcwallet/wallet/txsizes"
-	"github.com/btcsuite/btcwallet/walletdb"
-	"github.com/btcsuite/btcwallet/wtxmgr"
+	"github.com/sat20-labs/satsnet_btcd/btcec"
+	"github.com/sat20-labs/satsnet_btcd/btcutil"
+	"github.com/sat20-labs/satsnet_btcd/txscript"
+	"github.com/sat20-labs/satsnet_btcd/wire"
+	"github.com/sat20-labs/satsnet_btcwallet/waddrmgr"
+	"github.com/sat20-labs/satsnet_btcwallet/wallet/txauthor"
+	"github.com/sat20-labs/satsnet_btcwallet/wallet/txsizes"
+	"github.com/sat20-labs/satsnet_btcwallet/walletdb"
+	"github.com/sat20-labs/satsnet_btcwallet/wtxmgr"
 )
 
 func makeInputSource(eligible []Coin) txauthor.InputSource {

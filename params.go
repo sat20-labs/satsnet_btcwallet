@@ -4,6 +4,6 @@
 
 package main
 
-import "github.com/btcsuite/btcwallet/netparams"
+import "github.com/sat20-labs/satsnet_btcwallet/netparams"
 
-var activeNet = &netparams.MainNetParams
+var activeNet = &netparams.SatsMainNetParams

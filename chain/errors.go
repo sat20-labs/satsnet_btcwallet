@@ -469,18 +469,18 @@ var BtcdErrMap = map[string]error{
 	// "unmatched btcd error 4": ErrSameNonWitnessData,
 
 	// Returned from `testmempoolaccept` here:
-	// - https://github.com/btcsuite/btcd/blob/d881c686e61db35e332fb0309178152dac589b03/rpcserver.go#L3893
+	// - https://github.com/sat20-labs/satsnet_btcd/blob/d881c686e61db35e332fb0309178152dac589b03/rpcserver.go#L3893
 	"missing-inputs": ErrMissingInputs,
 
 	// Returned from `testmempoolaccept` here:
-	// - https://github.com/btcsuite/btcd/blob/d881c686e61db35e332fb0309178152dac589b03/rpcserver.go#L3917
+	// - https://github.com/sat20-labs/satsnet_btcd/blob/d881c686e61db35e332fb0309178152dac589b03/rpcserver.go#L3917
 	"max-fee-exceeded": ErrMaxFeeExceeded,
 }
 
 // BtcdErrMapPre2402 defines the error mapping for btcd versions prior to
 // 0.24.2 - all the errors changed in this commit have been defined here to
 // support older versions:
-// - https://github.com/btcsuite/btcd/pull/2053/commits/ef54c49df443815d50765e8c4f31a87944d950a6
+// - https://github.com/sat20-labs/satsnet_btcd/pull/2053/commits/ef54c49df443815d50765e8c4f31a87944d950a6
 var BtcdErrMapPre2402 = map[string]error{
 	// A transaction with too large output value.
 	"is higher than max allowed value": ErrLargeOutput,
